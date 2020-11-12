@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "288290113431",
+    "firebase_url": "https://spagconnect-6d4a3.firebaseio.com",
+    "project_id": "spagconnect-6d4a3",
+    "storage_bucket": "spagconnect-6d4a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288290113431:android:0301b0616aa3553675a6d2",
+        "android_client_info": {
+          "package_name": "com.example.spag_connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288290113431-eupa74pg0mb933pdsspa8mg9k5ceh8l1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spag_connect",
+            "certificate_hash": "3b3213f3131ed216f9f67a674cca9ff6d4143ffc"
+          }
+        },
+        {
+          "client_id": "288290113431-8ku3mi9hmih8ntsabuvi17rejel8cfq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClF16k4TpNy0DpjnwIHo7oVAJlZFdfjkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288290113431-8ku3mi9hmih8ntsabuvi17rejel8cfq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
