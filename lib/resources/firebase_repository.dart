@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:spag_connect/models/userModel.dart';
 import 'package:spag_connect/resources/firebase_methods.dart';
 
 class FirebaseRepository {
@@ -11,7 +12,12 @@ class FirebaseRepository {
   Future<bool> authenticateUser(FirebaseUser user) =>
       _firebaseMethods.authenticateUser(user);
 
-  Future<void> addDataToDb(FirebaseUser user) => _firebaseMethods.addDataToDb(user);
+  Future<void> addDataToDb(FirebaseUser user) =>
+      _firebaseMethods.addDataToDb(user);
 
+  //reponsible for signing out
   Future<void> signOut() => _firebaseMethods.signOut();
+
+  Future<List<UserModel>> fetchAllUsers(FirebaseUser user) =>
+      _firebaseMethods.fetchAllUsers(user);
 }

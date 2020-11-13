@@ -67,4 +67,16 @@ class FirebaseMethods {
     await _googleSignIn.signOut();
     return await _auth.signOut();
   }
+
+  Future<List<UserModel>> fetchAllUsers(FirebaseUser currentUser) async {
+    List<UserModel> userList = List<UserModel>();
+    QuerySnapshot querySnapshot =
+        await _firestore.collection("users").getDocuments();
+    for (var i = 0; i < querySnapshot.documents.length; i++) {
+      if (querySnapshot.documents[i].documentID != currentUser.uid) {
+        userList.add(UserModel.fromMap(querySnapshot.documents[i].data));
+      }
+    }
+    return userList;
+  }
 }

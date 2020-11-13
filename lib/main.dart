@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/home_screen.dart';
 import 'package:spag_connect/screens/login_screen.dart';
+import 'package:spag_connect/screens/search_screen.dart';
 
 void main()  {
   
@@ -23,6 +24,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "Spag Connect",
       debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      routes: {
+        '/search_screen' : (context) => SearchScreen(),
+      },
       home: FutureBuilder(
         future: _repository.getCurrentUser(),
         builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {

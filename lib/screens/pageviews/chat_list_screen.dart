@@ -45,13 +45,16 @@ class _ChatListScreenState extends State<ChatListScreen> {
               Icons.search,
               color: Colors.white,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              Navigator.pushNamed(context, "/search_screen");
+            }),
         IconButton(
             icon: Icon(
               Icons.more_vert,
               color: Colors.white,
             ),
-            onPressed: () {}),
+            onPressed: () {
+            }),
       ],
     );
   }
@@ -86,28 +89,26 @@ class _ChatListContainerState extends State<ChatListContainer> {
         itemBuilder: (context, index) {
           return CustomTile(
             mini: false,
-            onTap: (){},
+            onTap: () {},
             title: Text(
               "Coney",
               style: TextStyle(
-                color: Colors.white, fontFamily: "Arial", fontSize: 19
-              ),
+                  color: Colors.white, fontFamily: "Arial", fontSize: 19),
             ),
             subtitle: Text(
               "Hello",
-              style: TextStyle(
-                color: UniversalVariables.greyColor,
-                fontSize: 14
-              ),
+              style:
+                  TextStyle(color: UniversalVariables.greyColor, fontSize: 14),
             ),
             leading: Container(
-              constraints: BoxConstraints(maxHeight: 60, maxWidth:  60),
+              constraints: BoxConstraints(maxHeight: 60, maxWidth: 60),
               child: Stack(
                 children: [
                   CircleAvatar(
                     maxRadius: 30,
                     backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage("https://images.unsplash.com/photo-1547721064-da6cfb341d50"),
+                    backgroundImage: NetworkImage(
+                        "https://images.unsplash.com/photo-1547721064-da6cfb341d50"),
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
@@ -115,12 +116,10 @@ class _ChatListContainerState extends State<ChatListContainer> {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: UniversalVariables.onlineDotColor,
-                        border: Border.all(
-                          color: UniversalVariables.blackColor
-                        )
-                      ),
+                          shape: BoxShape.circle,
+                          color: UniversalVariables.onlineDotColor,
+                          border:
+                              Border.all(color: UniversalVariables.blackColor)),
                     ),
                   )
                 ],
