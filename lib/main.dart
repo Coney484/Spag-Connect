@@ -24,6 +24,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "Spag Connect",
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark
+      ) ,
       initialRoute: "/",
       routes: {
         '/search_screen' : (context) => SearchScreen(),

@@ -6,6 +6,8 @@ import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
 import 'package:spag_connect/widgets/custom_tile.dart';
 
+import 'chatscreens/chat_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -108,7 +110,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
         return CustomTile(
           mini: false,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                          receiver: searhedUser,
+                        )));
+          },
           leading: CircleAvatar(
             backgroundImage: NetworkImage(searhedUser.profilePhoto),
             backgroundColor: Colors.grey,
