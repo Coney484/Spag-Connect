@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:spag_connect/constants/strings.dart';
 import 'package:spag_connect/models/message.dart';
 import 'package:spag_connect/models/userModel.dart';
 import 'package:spag_connect/utils/utilities.dart';
@@ -35,8 +36,8 @@ class FirebaseMethods {
 
   Future<bool> authenticateUser(FirebaseUser user) async {
     QuerySnapshot result = await _firestore
-        .collection("users")
-        .where("email", isEqualTo: user.email)
+        .collection(USERS_COLLECTION)
+        .where(EMAIL_FIELD, isEqualTo: user.email)
         .getDocuments();
 
     final List<DocumentSnapshot> docs = result.documents;
@@ -57,7 +58,7 @@ class FirebaseMethods {
         username: username);
 
     await _firestore
-        .collection("users")
+        .collection(USERS_COLLECTION)
         .document(currentUser.uid)
         .setData(userModel.toMap(userModel));
   }
@@ -72,7 +73,7 @@ class FirebaseMethods {
   Future<List<UserModel>> fetchAllUsers(FirebaseUser currentUser) async {
     List<UserModel> userList = List<UserModel>();
     QuerySnapshot querySnapshot =
-        await _firestore.collection("users").getDocuments();
+        await _firestore.collection(USERS_COLLECTION).getDocuments();
     for (var i = 0; i < querySnapshot.documents.length; i++) {
       if (querySnapshot.documents[i].documentID != currentUser.uid) {
         userList.add(UserModel.fromMap(querySnapshot.documents[i].data));
@@ -86,13 +87,13 @@ class FirebaseMethods {
     var map = message.toMap();
 
     await _firestore
-        .collection("messages")
+        .collection(MESSAGES_COLLECTION)
         .document(message.senderId)
         .collection(message.receiverId)
         .add(map);
 
     return await _firestore
-        .collection("messages")
+        .collection(MESSAGES_COLLECTION)
         .document(message.receiverId)
         .collection(message.senderId)
         .add(map);
