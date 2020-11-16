@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/home_screen.dart';
