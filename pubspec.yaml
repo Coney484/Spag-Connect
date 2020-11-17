@@ -29,6 +29,10 @@ dependencies:
   gradient_app_bar: ^0.0.1
 
 
+  #Emojies
+  emoji_picker: ^0.1.0
+
+
   #FlutterFire
   cloud_firestore: ^0.13.7
   firebase_auth: ^0.16.1
