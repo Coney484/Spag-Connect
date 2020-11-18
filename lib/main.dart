@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spag_connect/provider/image_upload_provider.dart';
 import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/home_screen.dart';
 import 'package:spag_connect/screens/login_screen.dart';
 import 'package:spag_connect/screens/search_screen.dart';
 
-void main()  {
-  
+void main() {
   runApp(MyApp());
 }
 
@@ -20,25 +21,27 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // _repository.signOut();
-    return MaterialApp(
-      title: "Spag Connect",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark
-      ) ,
-      initialRoute: "/",
-      routes: {
-        '/search_screen' : (context) => SearchScreen(),
-      },
-      home: FutureBuilder(
-        future: _repository.getCurrentUser(),
-        builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-          if (snapshot.hasData) {
-            return HomeScreen();
-          } else {
-            return LoginScreen();
-          }
+
+    return ChangeNotifierProvider<ImageUploadProvider>(
+      create: (context) => ImageUploadProvider(),
+      child: MaterialApp(
+        title: "Spag Connect",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(brightness: Brightness.dark),
+        initialRoute: "/",
+        routes: {
+          '/search_screen': (context) => SearchScreen(),
         },
+        home: FutureBuilder(
+          future: _repository.getCurrentUser(),
+          builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+            if (snapshot.hasData) {
+              return HomeScreen();
+            } else {
+              return LoginScreen();
+            }
+          },
+        ),
       ),
     );
   }
