@@ -12,6 +12,8 @@ import 'package:spag_connect/provider/image_upload_provider.dart';
 import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/chatscreens/widgets/cached_image.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
+import 'package:spag_connect/utils/call_utilities.dart';
+import 'package:spag_connect/utils/permission.dart';
 import 'package:spag_connect/utils/utilities.dart';
 import 'package:spag_connect/widgets/appbar.dart';
 import 'package:spag_connect/widgets/custom_tile.dart';
@@ -195,18 +197,23 @@ class _ChatScreenState extends State<ChatScreen> {
             style: TextStyle(color: Colors.white, fontSize: 16.0),
           )
         : message.photoUrl != null
-            ? CachedImage(url: message.photoUrl)
+            ? CachedImage(
+                message.photoUrl,
+                height: 250,
+                width: 150,
+                radius: 10,
+              )
             : Text("Url was Null");
   }
 
   void pickImage({@required ImageSource source}) async {
-      File selectedImage = await Utils.pickImage(source: source);
-      _repository.uploadImage(
-          image: selectedImage,
-          receiverId: widget.receiver.uid,
-          senderId: _currentUserId,
-          imageUploadProvider: _imageUploadProvider);
-    }
+    File selectedImage = await Utils.pickImage(source: source);
+    _repository.uploadImage(
+        image: selectedImage,
+        receiverId: widget.receiver.uid,
+        senderId: _currentUserId,
+        imageUploadProvider: _imageUploadProvider);
+  }
 
   Widget receiverLayout(Message message) {
     Radius messageRadius = Radius.circular(10);
@@ -301,8 +308,6 @@ class _ChatScreenState extends State<ChatScreen> {
             );
           });
     }
-
-    
 
     return Container(
       padding: EdgeInsets.all(10),
@@ -435,7 +440,14 @@ class _ChatScreenState extends State<ChatScreen> {
       centerTitle: false,
       title: Text(widget.receiver.name),
       actions: <Widget>[
-        IconButton(icon: Icon(Icons.video_call), onPressed: () {}),
+        IconButton(
+          icon: Icon(Icons.video_call),
+          onPressed: () async =>
+              await Permissions.cameraAndMicrophonePermissionsGranted()
+                  ? CallUtils.dial(
+                      from: sender, to: widget.receiver, context: context)
+                  : {},
+        ),
         IconButton(icon: Icon(Icons.phone), onPressed: () {}),
       ],
     );
@@ -449,14 +461,17 @@ class ModalTile extends StatelessWidget {
   final Function onTap;
 
   const ModalTile(
-      {@required this.title, @required this.subTitle, @required this.icon, this.onTap});
+      {@required this.title,
+      @required this.subTitle,
+      @required this.icon,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: CustomTile(
-          mini: false,  
+          mini: false,
           onTap: onTap,
           leading: Container(
             margin: EdgeInsets.only(right: 10),

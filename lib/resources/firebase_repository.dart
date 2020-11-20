@@ -14,6 +14,8 @@ class FirebaseRepository {
 
   Future<FirebaseUser> signIn() => _firebaseMethods.signIn();
 
+  Future<UserModel> getUserDetails() => _firebaseMethods.getUserDetails();
+
   Future<bool> authenticateUser(FirebaseUser user) =>
       _firebaseMethods.authenticateUser(user);
 
@@ -37,9 +39,5 @@ class FirebaseRepository {
     @required ImageUploadProvider imageUploadProvider,
   }) =>
       _firebaseMethods.uploadImage(
-        image,
-        receiverId,
-        senderId,
-        imageUploadProvider
-      );
+          image, receiverId, senderId, imageUploadProvider);
 }

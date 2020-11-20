@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spag_connect/provider/image_upload_provider.dart';
+import 'package:spag_connect/provider/user_provider.dart';
 import 'package:spag_connect/resources/firebase_repository.dart';
 import 'package:spag_connect/screens/home_screen.dart';
 import 'package:spag_connect/screens/login_screen.dart';
@@ -22,13 +23,17 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // _repository.signOut();
 
-    return ChangeNotifierProvider<ImageUploadProvider>(
-      create: (context) => ImageUploadProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+
       child: MaterialApp(
         title: "Spag Connect",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(brightness: Brightness.dark),
-        initialRoute: "/",
+        initialRoute: '/',
         routes: {
           '/search_screen': (context) => SearchScreen(),
         },

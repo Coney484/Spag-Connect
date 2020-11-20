@@ -13,6 +13,10 @@ import 'package:spag_connect/utils/utilities.dart';
 class FirebaseMethods {
   final _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  static final CollectionReference _userCollection =
+      _firestore.collection(USERS_COLLECTION);
+
   static final Firestore _firestore = Firestore.instance;
 
   StorageReference _storageReference;
@@ -23,6 +27,14 @@ class FirebaseMethods {
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser currentUser = await _auth.currentUser();
     return currentUser;
+  }
+
+  Future<UserModel> getUserDetails() async {
+    FirebaseUser currentUser = await getCurrentUser();
+    DocumentSnapshot documentSnapshot =
+        await _userCollection.document(currentUser.uid).get();
+
+    return UserModel.fromMap(documentSnapshot.data);
   }
 
   Future<FirebaseUser> signIn() async {
