@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spag_connect/resources/firebase_repository.dart';
+import 'package:spag_connect/resources/auth_methods.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
 import 'package:spag_connect/utils/utilities.dart';
 import 'package:spag_connect/widgets/appbar.dart';
@@ -11,16 +11,18 @@ class ChatListScreen extends StatefulWidget {
 }
 
 //global
-final FirebaseRepository _repository = FirebaseRepository();
+// final FirebaseRepository _repository = FirebaseRepository();
+
 
 class _ChatListScreenState extends State<ChatListScreen> {
+  final AuthMethods _authMethods = AuthMethods();
   String currentUserId;
-  String initials;
+  String initials = "";
 
   @override
   void initState() {
     super.initState();
-    _repository.getCurrentUser().then((user) {
+    _authMethods.getCurrentUser().then((user) {
       setState(() {
         currentUserId = user.uid;
         initials = Utils.getInitials(user.displayName);
@@ -39,7 +41,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
       title: UserCircle(initials),
       centerTitle: true,
-      actions: [
+      actions: <Widget>[
         IconButton(
             icon: Icon(
               Icons.search,
@@ -53,8 +55,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            onPressed: () {
-            }),
+            onPressed: () {}),
       ],
     );
   }

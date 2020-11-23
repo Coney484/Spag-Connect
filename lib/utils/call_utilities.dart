@@ -20,7 +20,7 @@ class CallUtils {
       channelId: Random().nextInt(1000).toString(),
     );
 
-    bool callMade = await callMethods.makeCall(call);
+    bool callMade = await callMethods.makeCall(call:call);
 
     call.hasDialled = true;
 

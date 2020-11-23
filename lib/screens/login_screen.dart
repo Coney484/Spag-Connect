@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:spag_connect/resources/firebase_repository.dart';
+import 'package:spag_connect/resources/auth_methods.dart';
+import 'package:spag_connect/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:spag_connect/screens/home_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
@@ -11,25 +12,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FirebaseRepository _repository = FirebaseRepository();
+  // FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
 
   bool isLoginPressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
-      body: Stack(
-        children: [
-          Center(
-            child: loginButton(),
-          ),
-          isLoginPressed
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container()
-        ],
+    return PickUpLayout(
+          scaffold: Scaffold(
+        backgroundColor: UniversalVariables.blackColor,
+        body: Stack(
+          children: [
+            Center(
+              child: loginButton(),
+            ),
+            isLoginPressed
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }
@@ -57,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isLoginPressed = true;
     });
-    _repository.signIn().then((FirebaseUser user) {
+    _authMethods.signIn().then((FirebaseUser user) {
       print("something");
       if (user != null) {
         authenticateUser(user);
@@ -68,12 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void authenticateUser(FirebaseUser user) {
-    _repository.authenticateUser(user).then((isNewUser) {
+    _authMethods.authenticateUser(user).then((isNewUser) {
       setState(() {
         isLoginPressed = false;
       });
       if (isNewUser) {
-        _repository.addDataToDb(user).then((value) {
+        _authMethods.addDataToDb(user).then((value) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return HomeScreen();

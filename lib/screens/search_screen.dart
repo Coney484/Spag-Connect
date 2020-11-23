@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:spag_connect/models/userModel.dart';
-import 'package:spag_connect/resources/firebase_repository.dart';
+import 'package:spag_connect/resources/auth_methods.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
 import 'package:spag_connect/widgets/custom_tile.dart';
 
@@ -14,7 +14,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FirebaseRepository _repository = FirebaseRepository();
+  // FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
 
   List<UserModel> userList;
   String query = "";
@@ -23,8 +24,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    _repository.getCurrentUser().then((FirebaseUser user) {
-      _repository.fetchAllUsers(user).then((List<UserModel> list) {
+
+    _authMethods.getCurrentUser().then((FirebaseUser user) {
+      _authMethods.fetchAllUsers(user).then((List<UserModel> list) {
         setState(() {
           userList = list;
         });
@@ -89,15 +91,17 @@ class _SearchScreenState extends State<SearchScreen> {
   buildSuggestions(String query) {
     final List<UserModel> suggestionList = query.isEmpty
         ? []
-        : userList.where((UserModel user) {
-            String _getUsername = user.username.toLowerCase();
-            String _query = query.toLowerCase();
-            String _getName = user.name.toLowerCase();
-            bool matchesUserName = _getUsername.contains(_query);
-            bool matchesName = _getName.contains(_query);
+        : userList != null
+            ? userList.where((UserModel user) {
+                String _getUsername = user.username.toLowerCase();
+                String _query = query.toLowerCase();
+                String _getName = user.name.toLowerCase();
+                bool matchesUserName = _getUsername.contains(_query);
+                bool matchesName = _getName.contains(_query);
 
-            return (matchesUserName || matchesName);
-          }).toList();
+                return (matchesUserName || matchesName);
+              }).toList()
+            : [];
 
     return ListView.builder(
       itemCount: suggestionList.length,
