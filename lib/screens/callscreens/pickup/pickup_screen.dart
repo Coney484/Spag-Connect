@@ -5,7 +5,7 @@ import 'package:spag_connect/screens/callscreens/call_screen.dart';
 import 'package:spag_connect/screens/chatscreens/widgets/cached_image.dart';
 import 'package:spag_connect/utils/permission.dart';
 
-class PickUpScreen extends StatelessWidget {
+class  PickUpScreen extends StatelessWidget {
   final Call call;
   final CallMethods callMethods = CallMethods();
 
