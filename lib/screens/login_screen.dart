@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:spag_connect/resources/auth_methods.dart';
-import 'package:spag_connect/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:spag_connect/screens/home_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
@@ -19,21 +18,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PickUpLayout(
-          scaffold: Scaffold(
-        backgroundColor: UniversalVariables.blackColor,
-        body: Stack(
-          children: [
-            Center(
-              child: loginButton(),
-            ),
-            isLoginPressed
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Container()
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: UniversalVariables.blackColor,
+      body: Stack(
+        children: [
+          Center(
+            child: loginButton(),
+          ),
+          isLoginPressed
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container()
+        ],
       ),
     );
   }

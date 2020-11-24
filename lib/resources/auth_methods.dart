@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:spag_connect/constants/strings.dart';
+import 'package:spag_connect/enum/user_state.dart';
 import 'package:spag_connect/models/userModel.dart';
 import 'package:spag_connect/utils/utilities.dart';
+import 'package:flutter/material.dart';
 
 class AuthMethods {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -16,9 +17,8 @@ class AuthMethods {
   static final CollectionReference _userCollection =
       _firestore.collection(USERS_COLLECTION);
 
-
   //User class
-  UserModel userModel = UserModel();    
+  UserModel userModel = UserModel();
 
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser currentUser = await _auth.currentUser();
@@ -33,6 +33,16 @@ class AuthMethods {
     return UserModel.fromMap(documentSnapshot.data);
   }
 
+  Future<UserModel> getUserDetailsById(id) async {
+    try {
+      DocumentSnapshot documentSnapshot =
+          await _userCollection.document(id).get();
+      return UserModel.fromMap(documentSnapshot.data);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   Future<FirebaseUser> signIn() async {
     final GoogleSignInAccount _signInAccount = await _googleSignIn.signIn();
@@ -78,7 +88,6 @@ class AuthMethods {
         .setData(userModel.toMap(userModel));
   }
 
-
   Future<List<UserModel>> fetchAllUsers(FirebaseUser currentUser) async {
     List<UserModel> userList = List<UserModel>();
     QuerySnapshot querySnapshot =
@@ -98,5 +107,14 @@ class AuthMethods {
     return await _auth.signOut();
   }
 
+  void setUserState({@required String userId, @required UserState userState}) {
+    int stateNum = Utils.stateToNum(userState);
 
+    _userCollection.document(userId).updateData({
+      "state": stateNum,
+    });
+  }
+
+  Stream<DocumentSnapshot> getUserStream({@required String uid}) =>
+      _userCollection.document(uid).snapshots();
 }

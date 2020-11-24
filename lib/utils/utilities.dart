@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as Im;
 import 'package:path_provider/path_provider.dart';
+import 'package:spag_connect/enum/user_state.dart';
 
 class Utils {
   static String getUsername(String email) {
@@ -22,7 +23,7 @@ class Utils {
 
     final path = tempDir.path;
 
-    int random = Random().nextInt(100);
+    int random = Random().nextInt(10000);
 
     Im.Image image = Im.decodeImage(imageToCompress.readAsBytesSync());
     Im.copyResize(image, width: 500, height: 500);
@@ -36,5 +37,30 @@ class Utils {
         source: source, maxWidth: 500, maxHeight: 500, imageQuality: 85);
     File selectedImage = File(file.path);
     return compressImage(selectedImage);
+  }
+
+  static int stateToNum(UserState userState) {
+    switch (userState) {
+      case UserState.Offline:
+        return 0;
+
+      case UserState.Online:
+        return 1;
+
+      default:
+        return 2;
+    }
+  }
+
+  static UserState numToState(int number) {
+    switch (number) {
+      case 0:
+        return UserState.Offline;
+
+      case 1:
+        return UserState.Online;
+      default:
+        return UserState.Waiting;
+    }
   }
 }

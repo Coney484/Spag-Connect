@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:spag_connect/constants/strings.dart';
@@ -138,13 +139,13 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         }
 
-        // SchedulerBinding.instance.addPostFrameCallback((_) {
-        //   _listScrollController.animateTo(
-        //     _listScrollController.position.minScrollExtent,
-        //     duration: Duration(milliseconds: 250),
-        //     curve: Curves.easeInOut,
-        //   );
-        // });
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          _listScrollController.animateTo(
+            _listScrollController.position.minScrollExtent,
+            duration: Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+          );
+        });
 
         return ListView.builder(
             padding: EdgeInsets.all(10),
