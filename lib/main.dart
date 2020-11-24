@@ -9,6 +9,8 @@ import 'package:spag_connect/screens/login_screen.dart';
 import 'package:spag_connect/screens/search_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Firebase.inintializeApp();
   runApp(MyApp());
 }
 

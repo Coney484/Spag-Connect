@@ -100,11 +100,14 @@ class AuthMethods {
     return userList;
   }
 
-  Future<void> signOut() async {
-    await _googleSignIn.disconnect();
-    print("disconnecting from google");
-    await _googleSignIn.signOut();
-    return await _auth.signOut();
+  Future<bool> signOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   void setUserState({@required String userId, @required UserState userState}) {
