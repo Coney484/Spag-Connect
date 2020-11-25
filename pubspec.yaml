@@ -58,6 +58,7 @@ dependencies:
 
   # local storage
   sqflite: ^1.3.0
+  hive: ^1.4.1+1
 
   
 
