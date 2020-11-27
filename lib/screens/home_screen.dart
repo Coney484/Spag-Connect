@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:spag_connect/enum/user_state.dart';
 import 'package:spag_connect/provider/user_provider.dart';
 import 'package:spag_connect/resources/auth_methods.dart';
+import 'package:spag_connect/resources/local_db/repository/log_repository.dart';
 import 'package:spag_connect/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:spag_connect/screens/pageviews/chat_list_screen.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
@@ -26,10 +27,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       userProvider = Provider.of<UserProvider>(context, listen: false);
-
       await userProvider.refreshUser();
+
       _authMethods.setUserState(
           userId: userProvider.getUser.uid, userState: UserState.Online);
+
+      LogRepository.init(isHive: false, dbName: userProvider.getUser.uid);
     });
 
     WidgetsBinding.instance.addObserver(this);
@@ -96,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return PickUpLayout(
-          scaffold: Scaffold(
+      scaffold: Scaffold(
         backgroundColor: UniversalVariables.blackColor,
         body: PageView(
           children: [

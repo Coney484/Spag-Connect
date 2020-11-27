@@ -9,25 +9,20 @@ import 'package:spag_connect/screens/callscreens/pickup/pickup_layout.dart';
 import 'package:spag_connect/screens/pageviews/widgets/contact_view.dart';
 import 'package:spag_connect/screens/pageviews/widgets/new_chat_button.dart';
 import 'package:spag_connect/screens/pageviews/widgets/quiet_box.dart';
+import 'package:spag_connect/screens/pageviews/widgets/spag_connect_appbar.dart';
 import 'package:spag_connect/screens/pageviews/widgets/user_circle.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
 import 'package:spag_connect/widgets/appbar.dart';
 import 'package:spag_connect/widgets/custom_tile.dart';
 
 class ChatListScreen extends StatelessWidget {
-  CustomAppBar customAppBar(BuildContext context) {
-    return CustomAppBar(
-      leading: IconButton(
-        icon: Icon(
-          Icons.notifications,
-          color: Colors.white,
-        ),
-        onPressed: () {},
-      ),
-      title: UserCircle(),
-      centerTitle: true,
-      actions: <Widget>[
-        IconButton(
+  @override
+  Widget build(BuildContext context) {
+    return PickUpLayout(
+      scaffold: Scaffold(
+        backgroundColor: UniversalVariables.blackColor,
+        appBar: SpagConnectAppBar(title: UserCircle(), actions: <Widget>[
+          IconButton(
             icon: Icon(
               Icons.search,
               color: Colors.white,
@@ -35,24 +30,16 @@ class ChatListScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, "/search_screen");
             },
-            ),
-        IconButton(
+          ),
+          IconButton(
             icon: Icon(
               Icons.more_vert,
               color: Colors.white,
             ),
             onPressed: () {},
-            ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return PickUpLayout(
-          scaffold: Scaffold(
-        backgroundColor: UniversalVariables.blackColor,
-        appBar: customAppBar(context),
+          ),
+        ],
+        ),
         floatingActionButton: NewChatButton(),
         body: ChatListContainer(),
       ),
@@ -76,7 +63,10 @@ class ChatListContainer extends StatelessWidget {
               var docList = snapshot.data.documents;
 
               if (docList.isEmpty) {
-                return QuiteBox();
+                return QuietBox(
+                  heading: "This is where all the contacts are listed",
+                  subtitle: "Search for your friends and family to start calling or chatting with  them",
+                );
               }
 
               return ListView.builder(

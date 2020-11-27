@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:spag_connect/screens/search_screen.dart';
 import 'package:spag_connect/screens/universal_variables.dart';
 
-class QuiteBox extends StatelessWidget {
+class QuietBox extends StatelessWidget {
+  final String heading;
+  final String subtitle;
+
+  QuietBox({
+    @required this.heading,
+    @required this.subtitle,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -16,7 +24,7 @@ class QuiteBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "This is where all the contacts are listed",
+                heading,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -27,7 +35,7 @@ class QuiteBox extends StatelessWidget {
                 height: 25,
               ),
               Text(
-                "Search for your friends and family to start calling or chatting with them",
+                subtitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   letterSpacing: 1.2,
@@ -42,12 +50,11 @@ class QuiteBox extends StatelessWidget {
                 color: UniversalVariables.lightBlueColor,
                 child: Text("START SEARCHING"),
                 onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ),
-                ),
-              ),
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
+                    )),
+              )
             ],
           ),
         ),

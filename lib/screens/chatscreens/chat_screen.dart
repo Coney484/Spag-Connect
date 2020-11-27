@@ -33,7 +33,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController textFieldController = TextEditingController();
   ScrollController _listScrollController = ScrollController();
-  // FirebaseRepository _repository = FirebaseRepository();
+  
 
   final StorageMethods _storageMethods = StorageMethods();
   final ChatMethods _chatMethods = ChatMethods();
@@ -84,23 +84,25 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     _imageUploadProvider = Provider.of<ImageUploadProvider>(context);
-    return Scaffold(
-      backgroundColor: UniversalVariables.blackColor,
-      appBar: customAppBar(context),
-      body: Column(
-        children: <Widget>[
-          Flexible(
-            child: messageList(),
-          ),
-          _imageUploadProvider.getViewState == ViewState.LOADING
-              ? Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.only(right: 15),
-                  child: CircularProgressIndicator())
-              : Container(),
-          chatControls(),
-          showEmojiPicker ? Container(child: emojiContainer()) : Container(),
-        ],
+    return PickUpLayout(
+          scaffold: Scaffold(
+        backgroundColor: UniversalVariables.blackColor,
+        appBar: customAppBar(context),
+        body: Column(
+          children: <Widget>[
+            Flexible(
+              child: messageList(),
+            ),
+            _imageUploadProvider.getViewState == ViewState.LOADING
+                ? Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right: 15),
+                    child: CircularProgressIndicator())
+                : Container(),
+            chatControls(),
+            showEmojiPicker ? Container(child: emojiContainer()) : Container(),
+          ],
+        ),
       ),
     );
   }
@@ -121,7 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
       recommendKeywords: ["face", "happy", "party", "sad"],
       numRecommended: 50,
     );
-    // return emojiPicker;
+    
   }
 
   Widget messageList() {
@@ -139,13 +141,13 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         }
 
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          _listScrollController.animateTo(
-            _listScrollController.position.minScrollExtent,
-            duration: Duration(milliseconds: 250),
-            curve: Curves.easeInOut,
-          );
-        });
+        // SchedulerBinding.instance.addPostFrameCallback((_) {
+        //   _listScrollController.animateTo(
+        //     _listScrollController.position.minScrollExtent,
+        //     duration: Duration(milliseconds: 250),
+        //     curve: Curves.easeInOut,
+        //   );
+        // });
 
         return ListView.builder(
             padding: EdgeInsets.all(10),
@@ -213,14 +215,14 @@ class _ChatScreenState extends State<ChatScreen> {
             : Text("Url was Null");
   }
 
-  void pickImage({@required ImageSource source}) async {
-    File selectedImage = await Utils.pickImage(source: source);
-    _storageMethods.uploadImage(
-        image: selectedImage,
-        receiverId: widget.receiver.uid,
-        senderId: _currentUserId,
-        imageUploadProvider: _imageUploadProvider);
-  }
+  // void pickImage({@required ImageSource source}) async {
+  //   File selectedImage = await Utils.pickImage(source: source);
+  //   _storageMethods.uploadImage(
+  //       image: selectedImage,
+  //       receiverId: widget.receiver.uid,
+  //       senderId: _currentUserId,
+  //       imageUploadProvider: _imageUploadProvider);
+  // }
 
   Widget receiverLayout(Message message) {
     Radius messageRadius = Radius.circular(10);
@@ -315,6 +317,26 @@ class _ChatScreenState extends State<ChatScreen> {
             );
           });
     }
+
+    sendMessage() {
+    var text = textFieldController.text;
+
+    Message _message = Message(
+      receiverId: widget.receiver.uid,
+      senderId: sender.uid,
+      message: text,
+      timestamp: Timestamp.now(),
+      type: 'text',
+    );
+
+    setState(() {
+      isWriting = false;
+    });
+
+    textFieldController.text = "";
+
+    _chatMethods.addMessageToDb(_message, sender, widget.receiver);
+  }
 
     return Container(
       padding: EdgeInsets.all(10),
@@ -416,25 +438,34 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  sendMessage() {
-    var text = textFieldController.text;
-
-    Message _message = Message(
-      receiverId: widget.receiver.uid,
-      senderId: sender.uid,
-      message: text,
-      timestamp: Timestamp.now(),
-      type: 'text',
-    );
-
-    setState(() {
-      isWriting = false;
-    });
-
-    textFieldController.text = "";
-
-    _chatMethods.addMessageToDb(_message, sender, widget.receiver);
+   void pickImage({@required ImageSource source}) async {
+    File selectedImage = await Utils.pickImage(source: source);
+    _storageMethods.uploadImage(
+        image: selectedImage,
+        receiverId: widget.receiver.uid,
+        senderId: _currentUserId,
+        imageUploadProvider: _imageUploadProvider);
   }
+
+  // sendMessage() {
+  //   var text = textFieldController.text;
+
+  //   Message _message = Message(
+  //     receiverId: widget.receiver.uid,
+  //     senderId: sender.uid,
+  //     message: text,
+  //     timestamp: Timestamp.now(),
+  //     type: 'text',
+  //   );
+
+  //   setState(() {
+  //     isWriting = false;
+  //   });
+
+  //   textFieldController.text = "";
+
+  //   _chatMethods.addMessageToDb(_message, sender, widget.receiver);
+  // }
 
   CustomAppBar customAppBar(context) {
     return CustomAppBar(
