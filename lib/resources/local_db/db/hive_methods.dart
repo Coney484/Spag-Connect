@@ -9,6 +9,9 @@ class HiveMethods implements LogInterface {
   String hive_box = "Call_Logs";
 
   @override
+  openDb(dbName) => (hive_box = dbName);
+
+  @override
   init() async {
     Directory dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);

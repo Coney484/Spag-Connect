@@ -1,6 +1,8 @@
 import 'package:spag_connect/models/log.dart';
 
 abstract class LogInterface {
+  openDb(dbName);
+
   init();
 
   addLogs(Log log);
